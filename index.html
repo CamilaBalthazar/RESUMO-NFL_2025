@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Introdutório da NFL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A tabbed single-page application (SPA) was chosen to organize the content into four distinct, digestible sections: 'O Jogo', 'A Liga', 'História', and 'Temporada 2025'. This structure allows new users to learn progressively, starting with the basic rules, then the league's organization, its history, and finally the current context. This is more user-friendly than a long scroll, preventing information overload and allowing users to navigate directly to their topic of interest. Interactivity is centered on clickable tabs for navigation, tooltips on charts for data exploration, and an interactive diagram to explain player positions, making the learning process engaging. -->
+    <!-- Visualization & Content Choices:
+        - Scoring Types: Goal: Inform/Compare. Method: Chart.js Donut Chart. Interaction: Hover tooltips show details. Justification: A donut chart visually breaks down the proportion of each scoring type's value, which is more intuitive than a list. Library: Chart.js.
+        - Offense vs. Defense: Goal: Inform/Organize. Method: Interactive HTML/CSS Diagram. Interaction: Clicking on a position reveals its description. Justification: An interactive field diagram is a highly effective way to teach the basic roles and layout of the teams on the field. Method: Custom JS/HTML.
+        - Super Bowl Champions: Goal: Compare/Inform. Method: Chart.js Horizontal Bar Chart. Interaction: Hover tooltips. Justification: A bar chart is excellent for comparing the number of titles between teams and quickly identifying the most successful franchises. Library: Chart.js.
+        - Textual Content: Goal: Inform. Method: Clickable tabs to reveal text blocks. Interaction: Clicking tabs. Justification: Hides non-active content, keeping the UI clean and focused, improving readability and user control. Method: Custom JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #383838;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active {
+            border-bottom-color: #A0522D;
+            color: #A0522D;
+            font-weight: 600;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .position-btn {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid #A0522D;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#A0522D] mb-2">Guia Introdutório da NFL</h1>
+            <p class="text-lg text-gray-600">Um manual completo para entender o Futebol Americano e a NFL.</p>
+        </header>
+
+        <nav class="flex justify-center border-b border-gray-300 mb-8">
+            <a href="#" id="nav-jogo" class="nav-link active py-4 px-6 text-lg">O Jogo</a>
+            <a href="#" id="nav-liga" class="nav-link py-4 px-6 text-lg">A Liga</a>
+            <a href="#" id="nav-historia" class="nav-link py-4 px-6 text-lg">História</a>
+            <a href="#" id="nav-temporada" class="nav-link py-4 px-6 text-lg">Temporada 2025</a>
+        </nav>
+
+        <main>
+            <section id="content-jogo">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-2">Sobre o Esporte</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">O futebol americano é um esporte de estratégia, força e velocidade. Aqui estão os conceitos fundamentais para entender como uma partida funciona, desde a composição dos times até a contagem de pontos e a gestão do tempo.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Titulares</h3>
+                        <p class="text-gray-700">Cada time tem 11 jogadores em campo de cada vez. O elenco é dividido em três unidades especializadas: <br><br>
+                        - <strong>Ataque (Offense):</strong> Responsável por avançar com a bola e marcar pontos.<br>
+                        - <strong>Defesa (Defense):</strong> Responsável por impedir o avanço do adversário e evitar pontos.<br>
+                        - <strong>Times Especiais (Special Teams):</strong> Entram em campo em situações de chutes (punts, field goals, kickoffs).</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Tempos e Relógio</h3>
+                        <p class="text-gray-700">Uma partida é dividida em <strong>quatro quartos de 15 minutos</strong>. O relógio para em diversas situações, como passes incompletos, quando um jogador sai de campo ou em pedidos de tempo. <br><br>
+                        - <strong>Play Clock:</strong> O ataque tem 40 segundos para iniciar a próxima jogada. <br>
+                        - <strong>Timeouts:</strong> Cada time tem 3 pedidos de tempo por metade do jogo.</p>
+                    </div>
+                    <div class="card p-6 col-span-1 md:col-span-2">
+                        <h3 class="text-2xl font-bold mb-4 text-center text-[#A0522D]">Ataque vs. Defesa</h3>
+                        <p class="text-center text-gray-600 mb-4">O objetivo do ataque é conquistar 10 jardas em até 4 tentativas (downs) para ganhar um novo "first down". A defesa tenta impedir. Clique nas posições abaixo para saber mais.</p>
+                        <div class="relative bg-green-700 bg-opacity-80 rounded-lg p-4 h-96 md:h-[500px] text-white flex flex-col justify-around text-xs md:text-sm">
+                            <div id="position-info" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 p-4 rounded-lg text-center hidden w-4/5 md:w-1/2 z-20">
+                                <h4 id="info-title" class="font-bold text-lg mb-2"></h4>
+                                <p id="info-desc"></p>
+                                <button id="close-info" class="mt-4 bg-[#A0522D] px-4 py-1 rounded">Fechar</button>
+                            </div>
+                            <!-- Ataque -->
+                            <div class="text-center font-bold">ATAQUE</div>
+                            <div class="flex justify-around items-center">
+                                <button data-pos="WR" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">WR</button>
+                                <button data-pos="OL" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">OL</button>
+                                <button data-pos="QB" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">QB</button>
+                                <button data-pos="OL" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">OL</button>
+                                <button data-pos="WR" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">WR</button>
+                            </div>
+                            <div class="flex justify-center items-center">
+                                <button data-pos="RB" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">RB</button>
+                            </div>
+                            <div class="w-full h-px bg-white my-4"></div>
+                            <!-- Defesa -->
+                             <div class="flex justify-center items-center">
+                                <button data-pos="S" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">S</button>
+                            </div>
+                            <div class="flex justify-around items-center">
+                                <button data-pos="CB" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">CB</button>
+                                <button data-pos="LB" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">LB</button>
+                                <button data-pos="DL" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">DL</button>
+                                <button data-pos="LB" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">LB</button>
+                                <button data-pos="CB" class="position-btn rounded-full h-10 w-10 md:h-12 md:w-12 flex items-center justify-center font-bold">CB</button>
+                            </div>
+                           
+                            <div class="text-center font-bold">DEFESA</div>
+                        </div>
+                    </div>
+                     <div class="card p-6 md:col-span-2">
+                        <h3 class="text-2xl font-bold mb-4 text-center text-[#A0522D]">Pontuação</h3>
+                        <p class="text-center text-gray-600 mb-4">Existem várias maneiras de marcar pontos. O Touchdown é a principal, mas jogadas estratégicas podem resultar em outras pontuações.</p>
+                        <div class="chart-container">
+                            <canvas id="scoringChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-liga" class="hidden">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-2">Sobre a NFL</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">A National Football League (NFL) é a maior liga de futebol americano do mundo. Sua estrutura é projetada para promover competitividade e rivalidades, culminando no evento mais assistido dos EUA: o Super Bowl.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Conferências: Separação Histórica</h3>
+                        <p class="text-gray-700">A NFL é dividida em duas conferências: a <strong>AFC (American Football Conference)</strong> e a <strong>NFC (National Football Conference)</strong>. Essa divisão é o resultado da fusão em 1970 entre a antiga NFL e sua rival, a AFL. Times da antiga AFL formaram a base da AFC, enquanto os times mais antigos da NFL compuseram a NFC. Os campeões de cada conferência se enfrentam no Super Bowl.</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Divisões: Rivalidades Regionais</h3>
+                        <p class="text-gray-700">Cada conferência é subdividida em quatro divisões, com quatro times cada: <strong>Norte, Sul, Leste e Oeste</strong>. Essa organização geográfica fomenta grandes rivalidades, já que os times de uma mesma divisão se enfrentam duas vezes por ano. Vencer a divisão é o caminho mais garantido para os playoffs.</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Classificação (Playoffs)</h3>
+                        <p class="text-gray-700">Ao final da temporada regular de 18 semanas, os 4 campeões de divisão de cada conferência se classificam para os playoffs. Além deles, os 3 times de melhor campanha que não venceram suas divisões também se classificam (wild card). São 7 times da AFC e 7 da NFC que disputam um torneio de eliminação direta até a final de conferência.</p>
+                    </div>
+                     <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Super Bowl</h3>
+                        <p class="text-gray-700">O Super Bowl é a grande final da NFL, onde o campeão da AFC enfrenta o campeão da NFC para decidir quem será o campeão da temporada. É mais do que um jogo: é um evento cultural de proporções globais, famoso por seu show do intervalo e comerciais de alto custo. Vencer o Super Bowl é a maior glória no esporte.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-historia" class="hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-2">Um Pouco da História</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">A NFL tem uma história rica de mais de 100 anos. A era moderna da liga foi definida pela criação do Super Bowl, que transformou o esporte em um fenômeno global. Conheça as equipes mais vitoriosas e a evolução do troféu mais cobiçado.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                     <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Surgimento do Super Bowl</h3>
+                        <p class="text-gray-700">O primeiro Super Bowl aconteceu em janeiro de 1967, como um jogo entre os campeões das ligas rivais NFL e AFL. O Green Bay Packers, liderado pelo lendário técnico Vince Lombardi, venceu as duas primeiras edições. O sucesso do evento foi fundamental para a fusão completa das ligas em 1970, solidificando a NFL como a potência que é hoje.</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Títulos Pré-Super Bowl Era</h3>
+                        <p class="text-gray-700">Antes do Super Bowl, o título da NFL era decidido em uma final simples. Times como o <strong>Green Bay Packers (11 títulos)</strong>, <strong>Chicago Bears (8 títulos)</strong> e <strong>Cleveland Browns (4 títulos)</strong> foram as grandes potências dessa era, construindo legados que perduram até hoje.</p>
+                    </div>
+                     <div class="card p-6 md:col-span-2">
+                        <h3 class="text-2xl font-bold mb-4 text-center text-[#A0522D]">Maiores Campeões do Super Bowl</h3>
+                        <p class="text-center text-gray-600 mb-4">Desde sua criação, o Super Bowl se tornou o troféu definitivo. Veja as franquias que mais levantaram o Troféu Vince Lombardi.</p>
+                        <div class="chart-container h-96 max-h-[500px]">
+                            <canvas id="superbowlChampsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-temporada" class="hidden">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-2">Temporada 2025</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">Fique por dentro do que esperar da temporada 2025 da NFL. Conheça os times favoritos, os jogadores que prometem brilhar e como acompanhar toda a ação no Brasil, com as vozes que comandam a transmissão.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Times Mais Fortes</h3>
+                        <p class="text-gray-700">A disputa pelo topo está acirrada. Fique de olho em potências como:<br><br>
+                        - <strong>Kansas City Chiefs:</strong> A dinastia liderada por Patrick Mahomes.<br>
+                        - <strong>San Francisco 49ers:</strong> Um elenco recheado de estrelas em todas as posições.<br>
+                        - <strong>Baltimore Ravens:</strong> Com o QB Lamar Jackson, sempre um candidato forte na AFC.<br>
+                        - <strong>Detroit Lions:</strong> Uma força emergente que busca seu primeiro Super Bowl.</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Jogadores em Destaque</h3>
+                        <p class="text-gray-700">Estes são alguns dos nomes que podem decidir jogos e campeonatos:<br><br>
+                        - <strong>Patrick Mahomes (QB, Chiefs):</strong> Considerado por muitos o melhor da atualidade.<br>
+                        - <strong>C.J. Stroud (QB, Texans):</strong> O jovem fenômeno que transformou a equipe de Houston.<br>
+                        - <strong>Christian McCaffrey (RB, 49ers):</strong> O jogador mais versátil e produtivo do ataque.<br>
+                        - <strong>Micah Parsons (LB, Cowboys):</strong> Um pesadelo para os ataques adversários.</p>
+                    </div>
+                    <div class="card p-6 lg:col-span-1 md:col-span-2">
+                        <h3 class="text-2xl font-bold mb-4 text-[#A0522D]">Transmissões no Brasil</h3>
+                        <p class="text-gray-700">No Brasil, a temporada 2025 será transmitida por diversos canais e plataformas, como <strong>sportv</strong>, <strong>ESPN</strong>, <strong>Cazé TV</strong>, <strong>Ge TV</strong> e <strong>DAZN</strong>. O <strong>Super Bowl</strong>, a grande final, terá transmissão exclusiva do Grupo Globo.</p>
+                    </div>
+                    <div class="card p-6 lg:col-span-3">
+                        <h3 class="text-2xl font-bold mb-4 text-center text-[#A0522D]">O Time de Narradores do sportv</h3>
+                        <p class="text-center text-gray-600 mb-6">Embora as transmissões principais sejam na ESPN, a equipe que popularizou o esporte no Brasil e marcou uma era no sportv merece destaque pela sua importância na formação de novos fãs. Suas vozes são sinônimo de NFL para muitos brasileiros.</p>
+                        <div class="grid md:grid-cols-3 gap-6 text-center">
+                            <div>
+                                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                    <span class="text-3xl text-gray-500">🎙️</span>
+                                </div>
+                                <h4 class="font-bold text-lg">Everaldo Marques</h4>
+                                <p class="text-sm text-gray-600">O narrador "ridículo" que trouxe bordões inesquecíveis e uma energia contagiante para as transmissões.</p>
+                            </div>
+                            <div>
+                                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                    <span class="text-3xl text-gray-500">🧠</span>
+                                </div>
+                                <h4 class="font-bold text-lg">Antony Curti</h4>
+                                <p class="text-sm text-gray-600">A "bíblia" do futebol americano. O especialista que traz análises táticas profundas e curiosidades históricas.</p>
+                            </div>
+                            <div>
+                                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                    <span class="text-3xl text-gray-500">🗣️</span>
+                                </div>
+                                <h4 class="font-bold text-lg">Paulo Mancha</h4>
+                                <p class="text-sm text-gray-600">O comentarista que conecta o esporte com a cultura pop, trazendo leveza e um ponto de vista divertido para os jogos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('main section');
+
+            const positionData = {
+                QB: { title: 'Quarterback (QB)', desc: 'O cérebro do ataque. Ele recebe a bola no início da jogada, e pode passá-la para um recebedor ou entregá-la para um corredor.' },
+                RB: { title: 'Running Back (RB)', desc: 'Especialista em correr com a bola. Também pode receber passes curtos e ajudar no bloqueio.' },
+                WR: { title: 'Wide Receiver (WR)', desc: 'Jogador rápido e ágil, especialista em correr rotas e receber passes longos.' },
+                OL: { title: 'Linha Ofensiva (OL)', desc: 'Grupo de 5 jogadores cuja principal função é proteger o QB e abrir caminhos para os corredores.' },
+                DL: { title: 'Linha Defensiva (DL)', desc: 'A primeira barreira da defesa. Tenta parar as corridas e pressionar o QB adversário.' },
+                LB: { title: 'Linebacker (LB)', desc: 'Jogador versátil da defesa. Atua contra a corrida, pressiona o QB e marca recebedores.' },
+                CB: { title: 'Cornerback (CB)', desc: 'Marca os Wide Receivers adversários para impedir que recebam passes.' },
+                S: { title: 'Safety (S)', desc: 'A última linha de defesa. Ajuda a cobrir passes longos e a parar corridas que furam o bloqueio inicial.' },
+            };
+
+            const positionBtns = document.querySelectorAll('.position-btn');
+            const infoBox = document.getElementById('position-info');
+            const infoTitle = document.getElementById('info-title');
+            const infoDesc = document.getElementById('info-desc');
+            const closeInfoBtn = document.getElementById('close-info');
+           
+            positionBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const pos = btn.dataset.pos;
+                    if (positionData[pos]) {
+                        infoTitle.textContent = positionData[pos].title;
+                        infoDesc.textContent = positionData[pos].desc;
+                        infoBox.classList.remove('hidden');
+                    }
+                });
+            });
+
+            closeInfoBtn.addEventListener('click', () => {
+                infoBox.classList.add('hidden');
+            });
+
+
+            function updateActiveContent(targetId) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.id === `nav-${targetId}`) {
+                        link.classList.add('active');
+                    }
+                });
+                contentSections.forEach(section => {
+                    section.classList.add('hidden');
+                    if (section.id === `content-${targetId}`) {
+                        section.classList.remove('hidden');
+                    }
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.target.id.split('-')[1];
+                    updateActiveContent(targetId);
+                });
+            });
+           
+            const scoringCtx = document.getElementById('scoringChart').getContext('2d');
+            new Chart(scoringCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Touchdown (6)', 'Extra Point (1)', '2-Point Conversion (2)', 'Field Goal (3)', 'Safety (2)'],
+                    datasets: [{
+                        label: 'Pontos',
+                        data: [6, 1, 2, 3, 2],
+                        backgroundColor: ['#A0522D', '#D2B48C', '#8B4513', '#CD853F', '#F4A460'],
+                        borderColor: '#FDFBF8',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                             labels: {
+                                color: '#383838'
+                            }
+                        }
+                    }
+                }
+            });
+
+            const superbowlCtx = document.getElementById('superbowlChampsChart').getContext('2d');
+            new Chart(superbowlCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['New England Patriots', 'Pittsburgh Steelers', 'San Francisco 49ers', 'Dallas Cowboys', 'Kansas City Chiefs', 'Green Bay Packers'],
+                    datasets: [{
+                        label: 'Títulos de Super Bowl',
+                        data: [6, 6, 5, 5, 4, 4],
+                        backgroundColor: ['#A0522D', '#D2B48C', '#8B4513', '#CD853F', '#F4A460', '#A9A9A9'],
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#E5E7EB'
+                            },
+                            ticks: {
+                                color: '#383838'
+                            }
+                        },
+                        y: {
+                             grid: {
+                                display: false
+                            },
+                             ticks: {
+                                color: '#383838'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
